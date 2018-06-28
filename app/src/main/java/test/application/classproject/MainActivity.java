@@ -36,7 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import test.application.classproject.Adapters.DrawerLiastAdapter;
 import test.application.classproject.DataModels.DrawerDataModel;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity {
     Intent intent;
     ListView listview;
     Button btn_camera;
@@ -51,20 +51,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
-
+        btncamera();
         bind();
         createListDrawer();
-        btncamera();
-        btn_gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-            }
-        });
+        btn_gallery();
+        intent = getIntent();
 
     }
 
@@ -92,18 +83,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     void btncamera() {
-        btn_gallery.setOnClickListener(this);
-        btn_camera.setOnClickListener(this);
+        btn_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                permission();
+            }
+        });
 
 
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.btn_camera) {
-            permission();
-        }
+    void btn_gallery() {
+        btn_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
 
     }
 
@@ -164,6 +164,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-
-    }
+}
 
